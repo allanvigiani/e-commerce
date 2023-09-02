@@ -41,7 +41,7 @@ class UserController {
                 return {message: errorMessage, status: 500};
             }
 
-            return {message: `Usuário cadastrado com sucesso!`, status: 200};
+            return {message: `Usuário cadastrado com sucesso!`, status: 201};
         } catch (error) {
             return {message: error, status: 500};
         }

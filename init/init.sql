@@ -20,3 +20,17 @@ CREATE TABLE IF NOT EXISTS public."users_sessions"(
 ALTER TABLE "users_sessions" ADD PRIMARY KEY("id");
 ALTER TABLE "users_sessions" ADD CONSTRAINT "users_sessions_user_id_foreign" FOREIGN KEY("user_id") REFERENCES "users"("id");
 
+CREATE TABLE IF NOT EXISTS public."products"(
+    "id" SERIAL NOT NULL,
+    "user_id" BIGINT NOT NULL,
+    "name" VARCHAR(120) NOT NULL,
+    "description" TEXT NULL,
+    "amount" BIGINT NOT NULL,
+    "price" DOUBLE PRECISION NOT NULL,
+    "available" BOOLEAN NOT NULL,
+    "assessment" DOUBLE PRECISION NULL,
+    "url_image" TEXT NULL,
+    "created_at" TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL
+);
+ALTER TABLE "products" ADD PRIMARY KEY("id");
+ALTER TABLE "products" ADD CONSTRAINT "products_user_id_foreign" FOREIGN KEY("user_id") REFERENCES "users"("id");

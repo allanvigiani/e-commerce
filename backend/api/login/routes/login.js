@@ -16,4 +16,6 @@ router.post('/logout', authenticateToken, async (req, res) => {
     res.status(result.status).json({ message: result.message });
 });
 
+// TODO -> Rota de recuperação de senha via email
+
 export default router;
