@@ -34,3 +34,12 @@ CREATE TABLE IF NOT EXISTS public."products"(
 );
 ALTER TABLE "products" ADD PRIMARY KEY("id");
 ALTER TABLE "products" ADD CONSTRAINT "products_user_id_foreign" FOREIGN KEY("user_id") REFERENCES "users"("id");
+
+CREATE TABLE IF NOT EXISTS public."cart" (
+    "id" SERIAL NOT NULL,
+    "user_id" BIGINT NOT NULL,
+    "items" TEXT 
+);
+ALTER TABLE "cart" ADD PRIMARY KEY("id");
+ALTER TABLE "cart" ADD CONSTRAINT "users_id_unique" UNIQUE("user_id");
+ALTER TABLE "cart" ADD CONSTRAINT "cart_user_id_foreign" FOREIGN KEY("user_id") REFERENCES "users"("id");
