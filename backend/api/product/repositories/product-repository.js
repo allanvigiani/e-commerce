@@ -58,6 +58,20 @@ class ProductRepository {
         return result.rows;
     }
 
+    async getItemsUserCart(userId) {
+        await this.conn.connect();
+
+        const result = await this.conn.query(`
+            SELECT c.items FROM cart c WHERE user_id = $1;
+        `, [userId]);
+
+        const outputString = result.rows[0].items.replace(/[\[\]]/g, '');
+
+        const resultItems = await this.conn.query(`SELECT * FROM products p WHERE id IN (${outputString});`);
+
+        return resultItems.rows;
+    }
+
 }
 
 export default ProductRepository;

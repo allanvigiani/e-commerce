@@ -22,4 +22,14 @@ router.post('/cart/:item', authenticateToken, async (req, res) => {
     res.status(result.status).json({ message: result.message });
 });
 
+router.post('/cart/remove-item/:item', authenticateToken, async (req, res) => {
+    const result = await productController.removeItemtoCart(req.params.item, req.user);
+    res.status(result.status).json({ message: result.message });
+});
+
+router.get('/cart', authenticateToken, async (req, res) => {
+    const result = await productController.getItemstoCart(req.user);
+    res.status(result.status).json({ items: result.items });
+});
+
 export default router;

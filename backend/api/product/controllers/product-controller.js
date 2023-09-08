@@ -102,6 +102,60 @@ class ProductController {
         }
     }
 
+    async removeItemtoCart(itemId, userData) {
+        try {
+            const userId = userData.payload.id;
+            if (!userId) {
+                const errorMessage = `Problema ao identificar ID no token.`;
+                return {message: errorMessage, status: 500};
+            }
+
+            if (!itemId) {
+                const errorMessage = `Nenhum item foi passado como parâmetro.`;
+                return {message: errorMessage, status: 500};
+            }
+
+            const userCart = await this.productRepository.getUserCart(userId);
+
+            const items = JSON.parse(userCart[0].items);
+
+            const newItems = [];
+
+            for (const item of items) {
+                if (item == itemId) {
+                    continue;
+                }
+                newItems.push(item);
+            }
+
+            const newItemsString = JSON.stringify(newItems);
+
+            await this.productRepository.updateUserCart(userId, newItemsString);
+
+            return {message: `Item removido do carrinho!`, status: 200};
+
+        } catch (error) {
+            return {message: error, status: 500};
+        }
+    }
+
+    async getItemstoCart(userData) {
+        try {
+            const userId = userData.payload.id;
+            if (!userId) {
+                const errorMessage = `Problema ao identificar ID no token.`;
+                return {message: errorMessage, status: 500};
+            }
+
+            const items = await this.productRepository.getItemsUserCart(userId);
+
+            return {items: items, status: 200};
+
+        } catch (error) {
+            return {message: error, status: 500};
+        }
+    }
+
 }
 
 export default ProductController;
