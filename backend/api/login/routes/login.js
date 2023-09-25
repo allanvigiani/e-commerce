@@ -12,6 +12,7 @@ router.post('/login', async (req, res) => {
 });
 
 router.post('/logout', authenticateToken, async (req, res) => {
+    console.log(req.user);
     const result = await loginController.logout(req.user);
     res.status(result.status).json({ message: result.message });
 });
