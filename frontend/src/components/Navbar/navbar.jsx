@@ -1,6 +1,41 @@
 import React, { useState } from "react";
+import { getCookie, destroyCookie } from 'cookies-next';
+import { useRouter } from 'next/router';
 
 export default function Navbar() {
+
+    const logoutUser = async (e) => {
+        // RECUPERAR O COOKIE DA SESSAO
+        // ENVIAR PARA A ROTA http://localhost:3000/auth/logout
+        // MENSAGEM PARA O USUÁRIO
+        // DESTRUIR O TOKEN
+        // REDIRECT PARA LOGIN
+        try {
+
+            const token = getCookie('user_auth_information');
+            console.log(token)
+            const response = await fetch(`http://localhost:3000/auth/logout`, {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-type': 'application/json'
+                },
+                body: token
+            });
+
+            const json = await response.json();
+
+            if (response.status !== 200) {
+                setError(json.message);
+                e.preventDefault();
+            }
+
+            setCookie('user_auth_information', json.message.token);
+            router.push('/login');
+        } catch (error) {
+            console.error(`Erro: ${error}`)
+        }
+    }
 
     const [show, setshow] = useState(false);
     return (
@@ -32,7 +67,7 @@ export default function Navbar() {
                         <h1 className=" font-normal text-2xl leading-6 text-gray-800">E-commerce</h1>
                     </div>
                     <div className="hidden sm:flex flex-row space-x-4">
-                        <button className="bg-gray-800 rounded-md flex space-x-2 w-24 h-10 font-normal text-sm leading-3 text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-700 hover:bg-gray-700 duration-150 justify-center items-center">Sair</button>
+                        <button type="button" onClick={logoutUser} className="bg-gray-800 rounded-md flex space-x-2 w-24 h-10 font-normal text-sm leading-3 text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-700 hover:bg-gray-700 duration-150 justify-center items-center">Sair</button>
                     </div>
                     <div id="bgIcon" onClick={() => setshow(!show)} className={`focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800  justify-center items-center sm:hidden cursor-pointer`}>
                         <svg className={`${show ? 'hidden' : ''}`} width={24} height={24} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -66,7 +101,7 @@ export default function Navbar() {
                         </svg>
                     </div>
                     <div className="flex flex-col gap-4 mt-4 w-80 mx-auto ">
-                        <button className="rounded-md flex space-x-2 w-full h-10 font-normal text-sm leading-3 text-white bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-700 focus:bg-indigo-600 hover:bg-indigo-600 duration-150 justify-center items-center">Sair</button>
+                        <button type="button" onClick={logoutUser} className="rounded-md flex space-x-2 w-full h-10 font-normal text-sm leading-3 text-white bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-700 focus:bg-indigo-600 hover:bg-indigo-600 duration-150 justify-center items-center">Sair</button>
                     </div>
                 </div>
             </nav>
